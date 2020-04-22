@@ -2096,6 +2096,8 @@ class VBO {
             $this->logout();
         } elseif ($response->getStatusCode() === 500) {
             return '500';
+        } elseif ($response->getStatusCode() === 404) {
+            return '404';
         } else {
 			echo $response->getStatusCode() . ' - ' . $result['message'];
 		}
@@ -2172,6 +2174,8 @@ class VBO {
             return($result);
         } elseif ($response->getStatusCode() === 401) {
             $this->logout();
+        } elseif ($response->getStatusCode() === 404) {
+            return '404';
         } elseif ($response->getStatusCode() === 500) {
             return '500';
         } else {

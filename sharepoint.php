@@ -122,8 +122,25 @@ if (isset($_SESSION['token'])) {
 					$libraries = $veeam->getSharePointContent($rid, $sid, 'libraries');
 					$lists = $veeam->getSharePointContent($rid, $sid, 'lists');
 					$content = array();
-					
-					if ($libraries == '500' || $lists == '500') { /* Restore session has expired or was killed */
+
+                    if ($libraries == '500' || $lists == '500') { /* Restore session has expired or was killed */
+                        unset($_SESSION['rid']);
+                        ?>
+                        <script>
+                            Swal.fire({
+                                type: 'info',
+                                title: 'Failed to get sharepoint data',
+                                text: 'Internal error occurred, please wait.'
+                            }).then(function(e) {
+                                $(document).ready(function() {
+                                    setInterval(function() {
+                                        window.location.reload(true);
+                                    }, 30000);
+                                });
+                            });
+                        </script>
+                        <?php
+                    } elseif ($libraries == '404' || $lists == '404') { /* Restore session has expired or was killed */
 						unset($_SESSION['rid']);
 						?>
 						<script>
@@ -166,8 +183,25 @@ if (isset($_SESSION['token'])) {
 				} else {
 					$sites = $veeam->getSharePointSites($rid);
 					$content = array();
-					
-					if ($sites == '500') { /* Restore session has expired or was killed */
+
+					if ($sites == '500') {
+                        ?>
+                            <script>
+                                Swal.fire({
+                                    type: 'info',
+                                    title: 'Failed to get restore status.',
+                                    text: 'Internal error occurred, please wait.'
+                                }).then(function(e) {
+                                    $(document).ready(function() {
+                                        setInterval(function() {
+                                            window.location.reload(true);
+                                        }, 30000);
+                                    });
+                                });
+                            </script>
+                        <?php
+                    }
+					elseif ($sites == '404') { /* Restore session has expired or was killed */
 						unset($_SESSION['rid']);
 						?>
 						<script>
